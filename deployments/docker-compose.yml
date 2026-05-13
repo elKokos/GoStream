@@ -1,0 +1,22 @@
+services:
+  gostream:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      GOSTREAM_DATA_DIR: /var/lib/gostream
+      GOSTREAM_HTTP_ADDR: :8080
+      GOSTREAM_LOG_LEVEL: info
+    volumes:
+      - gostream-data:/var/lib/gostream
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+
+volumes:
+  gostream-data:
+
